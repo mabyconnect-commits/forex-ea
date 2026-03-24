@@ -10,6 +10,8 @@
 
 #include <Trade\Trade.mqh>
 #include <Trade\PositionInfo.mqh>
+#include <Trade\HistoryOrderInfo.mqh>
+#include <Trade\DealInfo.mqh>
 
 //+------------------------------------------------------------------+
 //| SECTION 1 — INPUT PARAMETERS                                     |
