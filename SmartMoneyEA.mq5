@@ -1,10 +1,10 @@
 //+------------------------------------------------------------------+
-//|                                                     TradahEA.mq5 |
+//|                                                     SmartMoneyEA.mq5 |
 //|          ICT / Smart Money Concept Expert Advisor                |
 //|          Instruments: XAUUSD, BTCUSD, USOIL, GBPUSD             |
 //|          Strategy: Order Blocks, FVG, Breaker Blocks             |
 //+------------------------------------------------------------------+
-#property copyright   "TradahEA — ICT Smart Money"
+#property copyright   "SmartMoneyEA — ICT Smart Money"
 #property version     "1.00"
 #property strict
 
@@ -43,7 +43,7 @@ input int SessionStartHour = 7;     // Session start hour UTC (default 7)
 input int SessionEndHour   = 22;    // Session end hour UTC (default 22)
 
 // Notifications
-input string TelegramBotToken = "";  // Telegram Bot Token
+input string TelegramBotToken = "8723945825:AAHd_-IX04V84lTVRAkL3X-lFKLyD4aj3uQ";  // Telegram Bot Token
 input string TelegramChatID   = "";  // Telegram Chat ID
 input string EmailAddress     = "";  // Email for trade notifications
 
@@ -135,11 +135,11 @@ int OnInit() {
     // Timer: fires every 30 seconds (we manage 5-min heartbeat with a counter)
     EventSetTimer(30);
 
-    Print("TradahEA initialized. Symbols: ", g_symbolCount,
+    Print("SmartMoneyEA initialized. Symbols: ", g_symbolCount,
           " | AccountType: ", (AccountType == LIVE ? "LIVE" : "PROP"),
           " | Risk: ", (AccountType == LIVE ? LiveRiskPercent : PropRiskPercent), "%");
 
-    SendTelegram("✅ TradahEA started on " + AccountInfoString(ACCOUNT_SERVER) +
+    SendTelegram("✅ SmartMoneyEA started on " + AccountInfoString(ACCOUNT_SERVER) +
                  " | Mode: " + (AccountType == LIVE ? "LIVE" : "PROP"));
 
     return INIT_SUCCEEDED;
@@ -151,8 +151,8 @@ int OnInit() {
 void OnDeinit(const int reason) {
     EventKillTimer();
     SaveStats();
-    SendTelegram("⛔ TradahEA stopped. Reason code: " + IntegerToString(reason));
-    Print("TradahEA deinitialized. Reason: ", reason);
+    SendTelegram("⛔ SmartMoneyEA stopped. Reason code: " + IntegerToString(reason));
+    Print("SmartMoneyEA deinitialized. Reason: ", reason);
 }
 
 //+------------------------------------------------------------------+
@@ -619,10 +619,10 @@ bool OpenTrade(string symbol, int direction, double entry,
 
     if (direction == 1) {
         result = trade.Buy(lots, symbol, entry, sl, tp,
-                           "TradahEA OB/FVG/BB BUY");
+                           "SmartMoneyEA OB/FVG/BB BUY");
     } else {
         result = trade.Sell(lots, symbol, entry, sl, tp,
-                            "TradahEA OB/FVG/BB SELL");
+                            "SmartMoneyEA OB/FVG/BB SELL");
     }
 
     if (result) {
@@ -639,7 +639,7 @@ bool OpenTrade(string symbol, int direction, double entry,
 
         SendTelegram(msg);
         if (EmailAddress != "")
-            SendMail("TradahEA — New Trade " + symbol, msg);
+            SendMail("SmartMoneyEA — New Trade " + symbol, msg);
 
         // Record trade
         int sz = ArraySize(g_tradeRecords);
@@ -773,7 +773,7 @@ void CheckClosedTrades() {
 
                 SendTelegram(msg);
                 if (EmailAddress != "")
-                    SendMail("TradahEA — Trade Closed " + sym, msg);
+                    SendMail("SmartMoneyEA — Trade Closed " + sym, msg);
 
                 SaveStats();
 
@@ -858,7 +858,7 @@ void CheckWeeklyReport() {
             string report = GenerateWeeklyReport();
             SendTelegram(report);
             if (EmailAddress != "")
-                SendMail("TradahEA — Weekly Report", report);
+                SendMail("SmartMoneyEA — Weekly Report", report);
             // Reset weekly stats
             ResetWeeklyStats();
         }
@@ -878,7 +878,7 @@ string GenerateWeeklyReport() {
     string currency = AccountInfoString(ACCOUNT_CURRENCY);
 
     string report =
-        "📊 WEEKLY REPORT — TradahEA\n" +
+        "📊 WEEKLY REPORT — SmartMoneyEA\n" +
         "================================\n" +
         "Period: " + TimeToString(g_weekStart) + " → " + TimeToString(TimeGMT()) + "\n\n" +
         "Total Trades: " + IntegerToString(total) + "\n" +
@@ -922,10 +922,10 @@ void SetWeekStart() {
 //| SaveStats — write stats to CSV                                   |
 //+------------------------------------------------------------------+
 void SaveStats() {
-    int fileHandle = FileOpen("TradahEA_stats.csv",
+    int fileHandle = FileOpen("SmartMoneyEA_stats.csv",
                               FILE_WRITE | FILE_CSV | FILE_ANSI);
     if (fileHandle == INVALID_HANDLE) {
-        Print("Failed to open TradahEA_stats.csv for writing");
+        Print("Failed to open SmartMoneyEA_stats.csv for writing");
         return;
     }
     FileWrite(fileHandle, "TotalTrades", "Wins", "Losses", "WinRate",
@@ -947,9 +947,9 @@ void SaveStats() {
 //| LoadStats — read stats from CSV                                  |
 //+------------------------------------------------------------------+
 void LoadStats() {
-    if (!FileIsExist("TradahEA_stats.csv")) return;
+    if (!FileIsExist("SmartMoneyEA_stats.csv")) return;
 
-    int fileHandle = FileOpen("TradahEA_stats.csv",
+    int fileHandle = FileOpen("SmartMoneyEA_stats.csv",
                               FILE_READ | FILE_CSV | FILE_ANSI);
     if (fileHandle == INVALID_HANDLE) return;
 
@@ -1075,14 +1075,14 @@ void ParseTelegramUpdates(string json) {
         // Process commands
         if (text == "/pause") {
             g_tradingPaused = true;
-            SendTelegram("⏸ TradahEA paused. No new trades will be opened.");
+            SendTelegram("⏸ SmartMoneyEA paused. No new trades will be opened.");
             Print("EA paused via Telegram command.");
         } else if (text == "/resume") {
             g_tradingPaused = false;
-            SendTelegram("▶️ TradahEA resumed. Trading is active.");
+            SendTelegram("▶️ SmartMoneyEA resumed. Trading is active.");
             Print("EA resumed via Telegram command.");
         } else if (text == "/status") {
-            string status = "📊 TradahEA Status\n" +
+            string status = "📊 SmartMoneyEA Status\n" +
                 "Mode: " + (AccountType == LIVE ? "LIVE" : "PROP") + "\n" +
                 "Paused: " + (g_tradingPaused ? "YES" : "NO") + "\n" +
                 "Session Active: " + (IsSessionActive() ? "YES" : "NO") + "\n" +
@@ -1099,5 +1099,5 @@ void ParseTelegramUpdates(string json) {
 }
 
 //+------------------------------------------------------------------+
-//| END OF TradahEA.mq5                                              |
+//| END OF SmartMoneyEA.mq5                                              |
 //+------------------------------------------------------------------+

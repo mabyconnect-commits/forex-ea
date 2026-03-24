@@ -1,4 +1,4 @@
-# TradahEA — ICT / Smart Money MT5 Expert Advisor
+# SmartMoneyEA — ICT / Smart Money MT5 Expert Advisor
 
 > Full-stack ICT/SMC strategy EA for MetaTrader 5.  
 > Instruments: XAUUSD · BTCUSD · USOIL · GBPUSD  
@@ -78,12 +78,12 @@ The EA only trades during:
 1. Open your MT5 terminal
 2. Click **File → Open Data Folder**
 3. Navigate to `MQL5/Experts/`
-4. Copy `TradahEA.mq5` into this folder
+4. Copy `SmartMoneyEA.mq5` into this folder
 
 ### Step 2 — Compile
 
 1. Open **MetaEditor** (press F4 in MT5, or Tools → MetaQuotes Language Editor)
-2. In the Navigator panel on the left, find `Experts → TradahEA`
+2. In the Navigator panel on the left, find `Experts → SmartMoneyEA`
 3. Double-click to open the file
 4. Press **F7** (or click the Compile button)
 5. Confirm: "0 errors, 0 warnings" in the Errors tab at the bottom
@@ -108,7 +108,7 @@ The EA only trades during:
 ### Step 5 — Attach EA to Chart
 
 1. Open a chart — **XAUUSD M15** is recommended
-2. In the Navigator panel: **Expert Advisors → TradahEA**
+2. In the Navigator panel: **Expert Advisors → SmartMoneyEA**
 3. Drag it onto the chart (or double-click)
 4. The EA parameters window will appear
 
@@ -316,7 +316,7 @@ Weekly reports are automatically sent every **Friday at 16:00 UTC**.
 
 **Q: What happens if MT5 restarts?**
 - `OnInit()` runs again automatically
-- Stats are reloaded from `TradahEA_stats.csv`
+- Stats are reloaded from `SmartMoneyEA_stats.csv`
 - Open positions are still managed (trailing stop, partial close)
 - Telegram polling resumes from the last processed update ID (resets to 0 on restart — recent commands may be re-processed once)
 
@@ -326,7 +326,7 @@ Weekly reports are automatically sent every **Friday at 16:00 UTC**.
 
 ```
 forex-ea/
-├── TradahEA.mq5          ← Main EA file
+├── SmartMoneyEA.mq5          ← Main EA file
 ├── README.md             ← This file
 └── backtest_guide.md     ← Backtesting instructions
 ```
@@ -335,12 +335,12 @@ After compilation, MT5 will create:
 ```
 MQL5/
 ├── Experts/
-│   ├── TradahEA.mq5
-│   └── TradahEA.ex5      ← Compiled binary
+│   ├── SmartMoneyEA.mq5
+│   └── SmartMoneyEA.ex5      ← Compiled binary
 └── Files/
-    └── TradahEA_stats.csv ← Performance tracking
+    └── SmartMoneyEA_stats.csv ← Performance tracking
 ```
 
 ---
 
-*Built for Maby — TradahEA v1.0 | ICT Smart Money Strategy*
+*Built for Maby — SmartMoneyEA v1.0 | ICT Smart Money Strategy*
