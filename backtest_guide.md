@@ -1,4 +1,4 @@
-# SmartMoneyEA — Backtesting Guide
+# 4rexbot — Backtesting Guide
 
 > How to backtest the ICT Smart Money EA in MT5 Strategy Tester  
 > Estimated time: 3–5 days for a thorough multi-symbol test
@@ -23,7 +23,7 @@
 Before starting:
 
 - [ ] MT5 installed and logged in to a demo or real account
-- [ ] `SmartMoneyEA.mq5` compiled successfully (0 errors)
+- [ ] `4rexbot.mq5` compiled successfully (0 errors)
 - [ ] Sufficient historical data downloaded (see below)
 - [ ] Broker provides tick data (not just M1 data)
 
@@ -53,7 +53,7 @@ Good backtest quality requires real tick data:
 
 | Setting | Value |
 |---------|-------|
-| Expert Advisor | SmartMoneyEA |
+| Expert Advisor | 4rexbot |
 | Symbol | XAUUSD |
 | Period | M15 (15-minute chart) |
 | Model | **Every tick based on real ticks** (best quality) |
@@ -378,5 +378,5 @@ Before going live:
 
 ---
 
-*SmartMoneyEA Backtest Guide — v1.0*  
+*4rexbot Backtest Guide — v1.0*  
 *Strategy: ICT Order Blocks | FVG | Breaker Blocks | 4H Trend Bias*

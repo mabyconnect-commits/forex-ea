@@ -1,10 +1,10 @@
 //+------------------------------------------------------------------+
-//|                                                     SmartMoneyEA.mq5 |
+//|                                                     4rexbot.mq5 |
 //|          ICT / Smart Money Concept Expert Advisor                |
 //|          Instruments: XAUUSD, BTCUSD, USOIL, GBPUSD             |
 //|          Strategy: Order Blocks, FVG, Breaker Blocks             |
 //+------------------------------------------------------------------+
-#property copyright   "SmartMoneyEA — ICT Smart Money"
+#property copyright   "4rexbot — ICT Smart Money"
 #property version     "1.00"
 #property strict
 
@@ -135,11 +135,11 @@ int OnInit() {
     // Timer: fires every 30 seconds (we manage 5-min heartbeat with a counter)
     EventSetTimer(30);
 
-    Print("SmartMoneyEA initialized. Symbols: ", g_symbolCount,
+    Print("4rexbot initialized. Symbols: ", g_symbolCount,
           " | AccountType: ", (AccountType == LIVE ? "LIVE" : "PROP"),
           " | Risk: ", (AccountType == LIVE ? LiveRiskPercent : PropRiskPercent), "%");
 
-    SendTelegram("✅ SmartMoneyEA started on " + AccountInfoString(ACCOUNT_SERVER) +
+    SendTelegram("✅ 4rexbot started on " + AccountInfoString(ACCOUNT_SERVER) +
                  " | Mode: " + (AccountType == LIVE ? "LIVE" : "PROP"));
 
     return INIT_SUCCEEDED;
@@ -151,8 +151,8 @@ int OnInit() {
 void OnDeinit(const int reason) {
     EventKillTimer();
     SaveStats();
-    SendTelegram("⛔ SmartMoneyEA stopped. Reason code: " + IntegerToString(reason));
-    Print("SmartMoneyEA deinitialized. Reason: ", reason);
+    SendTelegram("⛔ 4rexbot stopped. Reason code: " + IntegerToString(reason));
+    Print("4rexbot deinitialized. Reason: ", reason);
 }
 
 //+------------------------------------------------------------------+
@@ -619,10 +619,10 @@ bool OpenTrade(string symbol, int direction, double entry,
 
     if (direction == 1) {
         result = trade.Buy(lots, symbol, entry, sl, tp,
-                           "SmartMoneyEA OB/FVG/BB BUY");
+                           "4rexbot OB/FVG/BB BUY");
     } else {
         result = trade.Sell(lots, symbol, entry, sl, tp,
-                            "SmartMoneyEA OB/FVG/BB SELL");
+                            "4rexbot OB/FVG/BB SELL");
     }
 
     if (result) {
@@ -639,7 +639,7 @@ bool OpenTrade(string symbol, int direction, double entry,
 
         SendTelegram(msg);
         if (EmailAddress != "")
-            SendMail("SmartMoneyEA — New Trade " + symbol, msg);
+            SendMail("4rexbot — New Trade " + symbol, msg);
 
         // Record trade
         int sz = ArraySize(g_tradeRecords);
@@ -773,7 +773,7 @@ void CheckClosedTrades() {
 
                 SendTelegram(msg);
                 if (EmailAddress != "")
-                    SendMail("SmartMoneyEA — Trade Closed " + sym, msg);
+                    SendMail("4rexbot — Trade Closed " + sym, msg);
 
                 SaveStats();
 
@@ -858,7 +858,7 @@ void CheckWeeklyReport() {
             string report = GenerateWeeklyReport();
             SendTelegram(report);
             if (EmailAddress != "")
-                SendMail("SmartMoneyEA — Weekly Report", report);
+                SendMail("4rexbot — Weekly Report", report);
             // Reset weekly stats
             ResetWeeklyStats();
         }
@@ -878,7 +878,7 @@ string GenerateWeeklyReport() {
     string currency = AccountInfoString(ACCOUNT_CURRENCY);
 
     string report =
-        "📊 WEEKLY REPORT — SmartMoneyEA\n" +
+        "📊 WEEKLY REPORT — 4rexbot\n" +
         "================================\n" +
         "Period: " + TimeToString(g_weekStart) + " → " + TimeToString(TimeGMT()) + "\n\n" +
         "Total Trades: " + IntegerToString(total) + "\n" +
@@ -922,10 +922,10 @@ void SetWeekStart() {
 //| SaveStats — write stats to CSV                                   |
 //+------------------------------------------------------------------+
 void SaveStats() {
-    int fileHandle = FileOpen("SmartMoneyEA_stats.csv",
+    int fileHandle = FileOpen("4rexbot_stats.csv",
                               FILE_WRITE | FILE_CSV | FILE_ANSI);
     if (fileHandle == INVALID_HANDLE) {
-        Print("Failed to open SmartMoneyEA_stats.csv for writing");
+        Print("Failed to open 4rexbot_stats.csv for writing");
         return;
     }
     FileWrite(fileHandle, "TotalTrades", "Wins", "Losses", "WinRate",
@@ -947,9 +947,9 @@ void SaveStats() {
 //| LoadStats — read stats from CSV                                  |
 //+------------------------------------------------------------------+
 void LoadStats() {
-    if (!FileIsExist("SmartMoneyEA_stats.csv")) return;
+    if (!FileIsExist("4rexbot_stats.csv")) return;
 
-    int fileHandle = FileOpen("SmartMoneyEA_stats.csv",
+    int fileHandle = FileOpen("4rexbot_stats.csv",
                               FILE_READ | FILE_CSV | FILE_ANSI);
     if (fileHandle == INVALID_HANDLE) return;
 
@@ -1075,14 +1075,14 @@ void ParseTelegramUpdates(string json) {
         // Process commands
         if (text == "/pause") {
             g_tradingPaused = true;
-            SendTelegram("⏸ SmartMoneyEA paused. No new trades will be opened.");
+            SendTelegram("⏸ 4rexbot paused. No new trades will be opened.");
             Print("EA paused via Telegram command.");
         } else if (text == "/resume") {
             g_tradingPaused = false;
-            SendTelegram("▶️ SmartMoneyEA resumed. Trading is active.");
+            SendTelegram("▶️ 4rexbot resumed. Trading is active.");
             Print("EA resumed via Telegram command.");
         } else if (text == "/status") {
-            string status = "📊 SmartMoneyEA Status\n" +
+            string status = "📊 4rexbot Status\n" +
                 "Mode: " + (AccountType == LIVE ? "LIVE" : "PROP") + "\n" +
                 "Paused: " + (g_tradingPaused ? "YES" : "NO") + "\n" +
                 "Session Active: " + (IsSessionActive() ? "YES" : "NO") + "\n" +
@@ -1099,5 +1099,5 @@ void ParseTelegramUpdates(string json) {
 }
 
 //+------------------------------------------------------------------+
-//| END OF SmartMoneyEA.mq5                                              |
+//| END OF 4rexbot.mq5                                              |
 //+------------------------------------------------------------------+
